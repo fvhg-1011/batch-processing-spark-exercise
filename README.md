@@ -11,8 +11,8 @@ Here is simple how to run
 Code Explanation<br>
 1. retail_data is basically how we create connection to the postgredb(it needs to be load by using the .jar files) and it was read databases public with retail table  
 2. There are two analysis that have been created:<br>
-	a.agg_ouput(agg_df) -> that count how many countries on the retail table <br>
-	b.churn_output(churn_df) -> count how many person that potentially churn.
+	a.agg_ouput(agg_df) -> that count how many countries on the retail table and the data will be saved inside agg_ouput.csv folders<br>
+	b.churn_output(churn_df) -> count how many person that potentially churn and the data will be saved inside churn_output.csv folders    
 
 	for the churn_ouput here is the simple explanation:<br>
 	--> in this df, it was assumend that invoice_date represents date and customerid represents the unique customers(one customer)<br>
