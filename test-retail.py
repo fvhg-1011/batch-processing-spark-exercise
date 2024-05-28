@@ -16,8 +16,8 @@ retail_data = (
 )
 
 
-# data analysis
-# aggregasi simpleee
+# simple data analysis
+# aggregasi simpleee untuk count jumlah negara
 agg_df = retail_data.groupBy("country").count()
 
 # show aggeragsi
@@ -28,25 +28,28 @@ agg_df.show()
 agg_df.write.mode("overwrite").csv("agg_output.csv")
 
 # Churn Analysis
-# assume invoice date jadi "date" dan  'customerid' jadi unique customers
+
+# mengelompokkan data based on customer id
 churn_df = retail_data.groupBy("customerid").agg(
-    max("invoicedate").alias("last_order_date"), count("*").alias("order_count")
+    max("invoicedate").alias("last_order_date"),  #tanggal pesanan terakhir untuk setiap customer
+    count("*").alias("order_count") # total jumlah pesanan tiap pelanggan
 )
 
-# bikin batas threshold buat 90 hariii misalkan 
-churn_threshold_date = lit("2010-09-01")  # asmussi batas thersholdnya
+churn_threshold_date = lit("2010-09-01")  # asumsi batas thresholdnya
+
+# buat kondisi churn apabila lebih dari 90 hari maka jadi churn(1) dan jika tidak maka tidak churn (0)
 churn_df = churn_df.withColumn(
     "is_churned",
     when(datediff(churn_threshold_date, col("last_order_date")) > 90, 1).otherwise(0),
 )
 
 # show churn
-print("Churn Analysis Results:")
+print("Hasil analysis churn:")
 churn_df.show()
 
 # masukin jadi csv
 churn_df.write.mode("overwrite").csv("churn_output.csv")
 
-# matiin spark session(biar prosesnya g kebawa ke yg lain)
+# matiin spark session(biar prosesnya g nyangkut)
 spark.stop()
 
